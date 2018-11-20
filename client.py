@@ -10,7 +10,7 @@ import sys
 # Contenido que vamos a enviar
 LINE = sys.argv[1] + ' ' + sys.argv[2]
 LINE1 = 'INVITE sip:'
-LINE2 = 'REGISTER sip:'
+LINE2 = 'BYE sip:'
 LINE3 = 'ACK sip:'
 
 
@@ -20,12 +20,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     PORT = int(LINE.split('@')[1].split(':')[1])
     SERVER = LINE.split('@')[1].split(':')[0]
     METHOD = sys.argv[1]
-    print('X', PORT, SERVER, METHOD)
+    LINE_SEND = ''.join(LINE).split(' ')[1]
     my_socket.connect((SERVER, PORT))
-    print("Enviando: " + LINE)
-    my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
+    print("Enviando: " + LINE_SEND)
+    if METHOD == 'INVITE':
+        SEND = LINE1 + LINE_SEND
+        print(SEND)
+    elif METHOD == 'BYE':
+        SEND = LINE2 + LINE_SEND
+    my_socket.send(bytes(SEND, 'utf-8') + b'\r\n')
     data = my_socket.recv(1024)
-
     print('Recibido -- ', data.decode('utf-8'))
     print("Terminando socket...")
 
