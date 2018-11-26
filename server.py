@@ -25,7 +25,6 @@ class EchoHandler(socketserver.DatagramRequestHandler):
     def handle(self):
         while 1:
             line = self.rfile.read()
-            print(line.decode('utf-8'))
             if not line:
                 break
             METHOD = line.decode('utf-8').split()[0]
