@@ -21,18 +21,22 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     METHOD = sys.argv[1]
     LINE_SEND = ''.join(LINE).split(' ')[1]
     my_socket.connect((SERVER, PORT))
-    print("Enviando: " + LINE_SEND)
     if METHOD == 'INVITE':
         SEND = LINE1 + LINE_SEND
+        print(SEND)
     elif METHOD == 'BYE':
         SEND = LINE2 + LINE_SEND
-    my_socket.send(bytes(SEND, 'utf-8') + b'\r\n')
+    else:
+        SEND = LINE
+    print("Enviando: " + SEND)
+    my_socket.send(bytes(SEND + ' SIP/2.0', 'utf-8') + b'\r\n')
     data = my_socket.recv(1024)
     for receive in data.decode('utf-8').split():
         if receive == '200':
             SEND = LINE3 + LINE_SEND
             my_socket.send(bytes(SEND+ ' SIP/2.0', 'utf-8') + b'\r\n')
             data = my_socket.recv(1024)
+    print(data.decode('utf-8'))
     print('Recibido -- ', data.decode('utf-8'))
     print("Terminando socket...")
 
