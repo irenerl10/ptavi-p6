@@ -30,9 +30,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     print("Enviando: " + SEND)
     my_socket.send(bytes(SEND + ' SIP/2.0', 'utf-8') + b'\r\n\r\n')
     data = my_socket.recv(1024)
-    print(data.decode('utf-8').split()[1])
     if data.decode('utf-8').split()[1] == '100':
-        print('x')
         SEND = LINE3 + LINE_SEND
         my_socket.send(bytes(SEND + ' SIP/2.0', 'utf-8') + b'\r\n\r\n')
         data = my_socket.recv(1024)
