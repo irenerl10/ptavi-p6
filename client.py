@@ -23,7 +23,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     my_socket.connect((SERVER, PORT))
     if METHOD == 'INVITE':
         SEND = LINE1 + LINE_SEND
-        print(SEND)
     elif METHOD == 'BYE':
         SEND = LINE2 + LINE_SEND
     else:
@@ -32,7 +31,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     my_socket.send(bytes(SEND + ' SIP/2.0', 'utf-8') + b'\r\n\r\n')
     data = my_socket.recv(1024)
     for receive in data.decode('utf-8').split():
-        if receive == '200':
+        if receive == '100' and receive == '180' and receive == '200':
             SEND = LINE3 + LINE_SEND
             my_socket.send(bytes(SEND + ' SIP/2.0', 'utf-8') + b'\r\n\r\n')
             data = my_socket.recv(1024)
